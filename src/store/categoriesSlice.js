@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
 
-
 //Object.freeze to make the values permanent , one cant change the status from outside
 //STATUS will also act like a custom hook for another components 
  export const STATUSES=Object.freeze({
@@ -10,23 +9,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
     LOADING:'loading'
 })
 
-const productSlice = createSlice({
-    name:'product',
+const categoriesSlice = createSlice({
+    name:'categories',
     initialState:{
        data:[],
-    //    by default we putting our status as default
+    //    by default we putting our status as idle
        status:STATUSES.IDLE
     },
     reducers:{
-        // setProducts(state,action){
-        //     state.data=action.payload
-        // },
-        // setStatus(state,action ){
-        //     state.status=action.payload 
-        // }
+       
         
     },
-    //Thunk Part
+    //for Thunk
     extraReducers: (builder)=>{
      builder 
      .addCase(fetchProduct.pending,(state,action)=>{
@@ -43,8 +37,8 @@ const productSlice = createSlice({
     }
 })
 
-export const {setProducts,setStatus} = productSlice.actions
-export default productSlice.reducer
+export const {setProducts,setStatus} = categoriesSlice.actions
+export default categoriesSlice.reducer
 
 
 
@@ -52,7 +46,15 @@ export default productSlice.reducer
 //Thunk
 
  export const fetchProduct = createAsyncThunk('products/fetch',async()=>{
-    const res = await fetch('https://fakestoreapi.com/products')
+    const res = await fetch('/category/102', {
+      method:'GET',
+      headers:{
+         "X-Authorization": 'CxD6Am0jGol8Bh21ZjB9Gjbm3jyI9w4ZeHJAmYHdfdP4bCClNn7euVxXcGm1dvYs',
+      }
+    })
     const data =await res.json()
     return data
  })
+
+
+ 

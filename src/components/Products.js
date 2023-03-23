@@ -1,61 +1,63 @@
-import React, {useState,useEffect} from 'react'
+import React, { useEffect, useState } from "react";
 
-import { add } from '../store/cartSlice'
-import { useDispatch,useSelector } from 'react-redux'
-import {fetchProduct} from '../store/productSlice'
-import { STATUSES } from '../store/productSlice'
+import { add } from "../store/cartSlice";
+
+import { STATUSES } from "../store/categoriesSlice";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Products = () => {
+  // const[products,setProducts]=useState([])
 
-
-  const dispatch= useDispatch()
-  const {data:products,status}=useSelector((state)=>state.product)
-    // const[products,setProducts]=useState([])
-
-    
-
-    //you can also get data here than call it inside useEffect
+  //you can also get data here than call it inside useEffect
   //   const fetchProducts=async()=>{
   //     const res = await fetch('https://fakestoreapi.com/products')
   //     const data =await res.json()
   //     console.log(data);
   //     setProducts(data)
   //  }
-   
-    useEffect(()=>{
-    //   const fetchProducts=async()=>{
-    //     const res = await fetch('https://fakestoreapi.com/products')
-    //     const data =await res.json()
-    //     console.log(data);
-    //     setProducts(data)
-    //  }
-        dispatch(fetchProduct())
-    },[])
-
-    function handleAdd(product){
-      dispatch((add(product)))
-    }
-    if(status==STATUSES.LOADING){
-      return <h2>Loading...</h2>
-    }
-    if(status==STATUSES.ERROR){
-      return <h2>Something went wrong</h2>
-    }
+  const [category, setCategory] = useState([]);
+  const [product, setProduct] = useState([]);
+  useEffect(() => {
+    axios
+      .get("/category/102", {
+        headers: {
+          "X-Authorization":
+            "CxD6Am0jGol8Bh21ZjB9Gjbm3jyI9w4ZeHJAmYHdfdP4bCClNn7euVxXcGm1dvYs",
+        },
+      })
+      .then((res) => {
+        setCategory(res.data.data.combos.data);
+        setProduct(res.data.data.products.data);
+      });
+  }, []);
 
   return (
-    <div className='productsWrapper'>
-     {
-        products.map((product)=>(
-          <div className='card' key={product.id}>
-          <img src={product.image} alt=''/>
-          <h4>{product.title}</h4>
-          <h5>{product.price}</h5>
-          <button onClick={()=>handleAdd(product)} className='btn'>Add to cart</button>
-          </div>
-        ))
-     }
+    <div className="productsWrapper">
+      {/* Combo product */}
+      {category.map((e) => (
+        <div className="card" key={e.id}>
+          <img src={e.meta_img?.url} alt="img" />
+          <Link to={`/category/${e.id}`}>
+            <h4>{e.name}</h4>
+          </Link>
+          <h5>{e.selling_price}</h5>
+          <button className="btn">Add to cart</button>
+        </div>
+      ))}
+      {/* Single Product */}
+      {product.map((e) => (
+        <div className="card" key={e.id}>
+          <img src={e.thumbnail_img?.original_url} alt="img" />
+          <Link to={`/category/${e.id}`}>
+            <h4>{e.name}</h4>
+          </Link>
+          <h5>{e.selling_price}</h5>
+          <button className="btn">Add to cart</button>
+        </div>
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default Products
+export default Products;
