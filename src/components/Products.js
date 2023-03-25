@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { useDispatch } from "react-redux";
 import { add } from "../store/cartSlice";
 
 import { STATUSES } from "../store/categoriesSlice";
@@ -16,6 +16,8 @@ const Products = () => {
   //     console.log(data);
   //     setProducts(data)
   //  }
+
+  const dispatch=useDispatch()
   const [category, setCategory] = useState([]);
   const [product, setProduct] = useState([]);
   useEffect(() => {
@@ -27,22 +29,31 @@ const Products = () => {
         },
       })
       .then((res) => {
-        setCategory(res.data.data.combos.data);
-        setProduct(res.data.data.products.data);
+        setCategory(res.data.data.combos.data);                // setting data for COMBO
+        setProduct(res.data.data.products.data);                // setting data for SINGLE PRODUCT
       });
   }, []);
+
+  const handleAdd=(first)=>{
+    dispatch(add(first))
+
+  }
+  const handlesecond=(e)=>{
+    dispatch(add(e))
+
+  }
 
   return (
     <div className="productsWrapper">
       {/* Combo product */}
-      {category.map((e) => (
-        <div className="card" key={e.id}>
-          <img src={e.meta_img?.url} alt="img" />
-          <Link to={`/category/${e.id}`}>
-            <h4>{e.name}</h4>
+      {category.map((first) => (
+        <div className="card" key={first.id}>
+          <img src={first.meta_img?.url} alt="img" />
+          <Link to={`/category/${first.id}`}>
+            <h4>{first.name}</h4>
           </Link>
-          <h5>{e.selling_price}</h5>
-          <button className="btn">Add to cart</button>
+          <h5>{first.selling_price}</h5>
+          <button className="btn" onClick={()=>handleAdd(first)}>Add to cart</button>
         </div>
       ))}
       {/* Single Product */}
@@ -53,7 +64,7 @@ const Products = () => {
             <h4>{e.name}</h4>
           </Link>
           <h5>{e.selling_price}</h5>
-          <button className="btn">Add to cart</button>
+          <button className="btn" onClick={()=>handlesecond(e)}>Add to cart</button>
         </div>
       ))}
     </div>

@@ -45,7 +45,7 @@ const Cart = () => {
 
     return (
         <div>
-            <h3>Cart</h3>
+            <h3>Cart combo</h3>
             <div className="cartWrapper">
                 {products.map((product) => (
                     <div key={product.id} className="cartCard">
