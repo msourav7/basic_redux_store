@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Cart from "./pages/Cart";
+import MergeCart from "./pages/MergeCart";
 import Navbar from "./components/Navbar";
 import { Provider } from "react-redux";
 import store from "./store/Store";
@@ -13,7 +13,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/cart" element={<MergeCart />}></Route>
           <Route path="/category/:id"  element={<ProductDetails />}/>
         </Routes>
       </Provider>
