@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { add } from "../store/cartSlice";
 
-import { STATUSES } from "../store/categoriesSlice";
+
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -23,7 +23,7 @@ const ComboProducts = () => {
   
   useEffect(() => {
     axios
-      .get("/category/102", {
+      .get("https://combonation.in/mobile/api/category/102", {
         headers: {
           "X-Authorization":
             "CxD6Am0jGol8Bh21ZjB9Gjbm3jyI9w4ZeHJAmYHdfdP4bCClNn7euVxXcGm1dvYs",
